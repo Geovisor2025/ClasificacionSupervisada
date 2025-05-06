@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="./resources/ol.css">
+        <link rel="stylesheet" href="resources/fontawesome-all.min.css">
+        <link rel="stylesheet" type="text/css" href="resources/horsey.min.css">
+        <link rel="stylesheet" type="text/css" href="resources/ol3-search-layer.min.css">
+        <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
+        <link rel="stylesheet" href="./resources/qgis2web.css">
+        <style>
+        html, body {
+            background-color: #ffffff;
+        }
+        .ol-control > * {
+            background-color: #f8f8f8!important;
+            color: #444444!important;
+            border-radius: 0px;
+        }
+        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
+            color: #444444!important;
+        }
+        .search-layer-input-search {
+            background-color: #f8f8f8!important;
+        }
+        .ol-control > *:focus, .ol-control >*:hover {
+            background-color: rgba(248, 248, 248, 0.7)!important;
+        } 
+        .ol-control {
+            background-color: rgba(255,255,255,.4) !important;
+            padding: 2px !important;
+        } 
+
+.title-large,
+.title-medium,
+.title-small {
+    background: linear-gradient(to right, red, blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text; /* Fallback para navegadores que lo soporten */
+    color: transparent;
+
+    margin: 0;
+    text-align: left; /* o center, según diseño */
+}
+
+.title-large {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.title-medium {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.title-small {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.top-left-title {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.7); /* opcional: fondo translúcido */
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente si hay espacio */
+    text-align: center;
+}
+
+
+ .bottom-left-logos {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        z-index: 9999;
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 5px;
+        border-radius: 4px;
+        display: flex;
+        gap: 10px; /* espacio entre imágenes */
+        align-items: center;
+    }
+
+    .bottom-left-logos img {
+        height: 50px;
+        width: auto;
+    }
+
+
+
+.top-left-buttons {
+    position: absolute;
+    bottom: 80px;
+    right: 10px;
+    z-index: 10000;
+    background-color: rgba(92, 180, 74, 0.85);
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.top-right-buttons button {
+    font-size: 14px;
+    padding: 6px 10px;
+    cursor: pointer;
+    border: none;
+    background: #0550ca;
+    color: white;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.top-right-buttons button:hover {
+    background: #0078d4;
+}
+
+.opacity-control {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #e0e0e0;
+    border-radius: 16px;
+    padding: 12px 20px;
+    z-index: 1000;
+    font-family: sans-serif;
+    font-size: 14px;
+    box-shadow: 3px 3px 6px #bebebe, -1px -1px 3px #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.opacity-control label {
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #444;
+}
+
+.opacity-control input[type="range"] {
+    -webkit-appearance: none;
+    width: 150px;
+    height: 6px;
+    border-radius: 5px;
+    background: #ccc;
+    outline: none;
+    box-shadow: inset 2px 2px 4px #bebebe, inset -2px -2px 4px #f0f0f0;
+}
+
+.opacity-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #888;
+    border-radius: 50%;
+    box-shadow: 2px 2px 4px #bebebe, -2px -2px 4px #f0f0f0;
+    cursor: pointer;
+}
+
+.ol-scale-line {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 12px;
+}
+
+        </style>
+
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>CENSO AGROPECUARIO</title>
+    </head>
+    <body>
+        <div id="map">
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+        </div>
+
+
+<div class="opacity-control">
+  <label for="opacityRange">Transparencia de coberturas</label>
+  <input type="range" id="opacityRange" min="0" max="1" step="0.1" value="1">
+</div>
+        
+        <script src="resources/qgis2web_expressions.js"></script>
+        <script src="./resources/functions.js"></script>
+        <script src="./resources/ol.js"></script>
+        <script src="resources/horsey.min.js"></script>
+        <script src="resources/ol3-search-layer.js"></script>
+        <script src="./resources/ol-layerswitcher.js"></script>
+        <script src="layers/ClasificacinSupervisadaWARNES_1.js"></script><script src="layers/ClasificacinSupervisadaTRINCHERA_2.js"></script><script src="layers/ClasificacinSupervisadaTRESCRUCES_3.js"></script><script src="layers/ClasificacinSupervisadaTHULAWINTHO_4.js"></script><script src="layers/ClasificacinSupervisadaSALANCACHI_5.js"></script><script src="layers/ClasificacinSupervisadaPOZOALMAR_6.js"></script><script src="layers/ClasificacinSupervisadaMEDIALUNA_7.js"></script><script src="layers/ClasificacinSupervisadaLACAHUARCA_8.js"></script><script src="layers/ClasificacinSupervisadaLASMARAS_9.js"></script><script src="layers/ClasificacinSupervisadaELCARMENELDORADO_10.js"></script><script src="layers/ClasificacinSupervisadaKORYMAYU_11.js"></script><script src="layers/ClasificacinSupervisadaCHUNCUSLA_12.js"></script><script src="layers/ClasificacinSupervisadaCAIMANES_13.js"></script><script src="layers/ClasificacinSupervisadaBRECHAH_14.js"></script><script src="layers/ClasificacinSupervisada25DEMAYO_15.js"></script><script src="layers/Departamentos_16.js"></script><script src="layers/Municipios_17.js"></script><script src="layers/PerimetroABA_18.js"></script>
+        <script src="styles/ClasificacinSupervisadaWARNES_1_style.js"></script><script src="styles/ClasificacinSupervisadaTRINCHERA_2_style.js"></script><script src="styles/ClasificacinSupervisadaTRESCRUCES_3_style.js"></script><script src="styles/ClasificacinSupervisadaTHULAWINTHO_4_style.js"></script><script src="styles/ClasificacinSupervisadaSALANCACHI_5_style.js"></script><script src="styles/ClasificacinSupervisadaPOZOALMAR_6_style.js"></script><script src="styles/ClasificacinSupervisadaMEDIALUNA_7_style.js"></script><script src="styles/ClasificacinSupervisadaLACAHUARCA_8_style.js"></script><script src="styles/ClasificacinSupervisadaLASMARAS_9_style.js"></script><script src="styles/ClasificacinSupervisadaELCARMENELDORADO_10_style.js"></script><script src="styles/ClasificacinSupervisadaKORYMAYU_11_style.js"></script><script src="styles/ClasificacinSupervisadaCHUNCUSLA_12_style.js"></script><script src="styles/ClasificacinSupervisadaCAIMANES_13_style.js"></script><script src="styles/ClasificacinSupervisadaBRECHAH_14_style.js"></script><script src="styles/ClasificacinSupervisada25DEMAYO_15_style.js"></script><script src="styles/Departamentos_16_style.js"></script><script src="styles/Municipios_17_style.js"></script><script src="styles/PerimetroABA_18_style.js"></script>
+        <script src="./layers/layers.js" type="text/javascript"></script> 
+        <script src="./resources/Autolinker.min.js"></script>
+        <script src="./resources/qgis2web.js"></script>
+
+<script>
+  const opacitySlider = document.getElementById('opacityRange');
+
+  // Lista de capas que quieres que reaccionen al slider
+  const layersToControl = [
+    lyr_ClasificacinSupervisadaWARNES_1,
+    lyr_ClasificacinSupervisadaTRINCHERA_2,
+    lyr_ClasificacinSupervisadaTRESCRUCES_3,
+    lyr_ClasificacinSupervisadaTHULAWINTHO_4,
+    lyr_ClasificacinSupervisadaSALANCACHI_5,
+    lyr_ClasificacinSupervisadaPOZOALMAR_6,
+    lyr_ClasificacinSupervisadaMEDIALUNA_7,
+    lyr_ClasificacinSupervisadaLACAHUARCA_8,
+    lyr_ClasificacinSupervisadaLASMARAS_9,
+    lyr_ClasificacinSupervisadaELCARMENELDORADO_10,
+    lyr_ClasificacinSupervisadaKORYMAYU_11,
+    lyr_ClasificacinSupervisadaCHUNCUSLA_12,
+    lyr_ClasificacinSupervisadaCAIMANES_13,
+    lyr_ClasificacinSupervisadaBRECHAH_14,
+    lyr_ClasificacinSupervisada25DEMAYO_15
+  ];
+opacitySlider.addEventListener('input', function () {
+    const value = parseFloat(this.value);
+    layersToControl.forEach(layer => {
+      layer.setOpacity(value);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+<div class="top-left-buttons">
+    <button onclick="window.open('https://drive.google.com/file/d/1y1LqDw_GhsaTpCmkTCZpq1YGu2ojqA35/view?usp=sharing', '_blank')">📄 Ver Mapa</button>
+</div>
+
+
+<div class="bottom-left-logos">
+    <img src="images/agro.png" alt="Logo 1" />
+    <img src="images/ine.png" alt="Logo 2" />
+</div> 
+
+
+    </body>
+</html>
